@@ -94,7 +94,7 @@ public class FullSlider extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), cornerRadius.value(), backgroundColor.value());
 
         float ratio = (float) (value / max);
@@ -106,7 +106,7 @@ public class FullSlider extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
         if (event.isHeld(MouseButton.LEFT)) {
             update(size, event.x());
         }
@@ -115,7 +115,7 @@ public class FullSlider extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
             update(size, event.x());
         }

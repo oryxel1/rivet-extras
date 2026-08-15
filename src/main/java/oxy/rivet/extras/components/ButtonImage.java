@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
+import net.lenni0451.rivet.backend.thingl.texture.ThinGLGPUTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
@@ -18,7 +18,7 @@ import oxy.rivet.extras.utils.ColorUtils;
 @Accessors(fluent = true, chain = true, makeFinal = true)
 public class ButtonImage extends Component {
     @Getter
-    private final ThinGLTexture texture;
+    private final ThinGLGPUTexture texture;
 
     private final ClickListener clickListener;
 
@@ -28,15 +28,15 @@ public class ButtonImage extends Component {
     @Getter
     private final AltThemeOption<Integer> blendDuration = new AltThemeOption<>(this, 800);
 
-    private long animationResetTime;
+    private long animationResetTime = -1;
 
     public ButtonImage(final Texture2D texture, final ClickListener clickListener) {
-        this.texture = new ThinGLTexture(texture);
+        this.texture = new ThinGLGPUTexture(texture);
         this.clickListener = clickListener;
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
             clickListener.onClick(event);
             return true;
@@ -46,7 +46,7 @@ public class ButtonImage extends Component {
     }
 
     @Override
-    public void render(final Renderer renderer, final Size size) {
+    public void renderInternal(final Renderer renderer, final Size size) {
         long duration = (System.currentTimeMillis() - Math.abs(animationResetTime));
         float progress = Math.min(duration / (float) blendDuration.value(), 1);
         final Color color;
@@ -65,12 +65,12 @@ public class ButtonImage extends Component {
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         animationResetTime = System.currentTimeMillis();
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         animationResetTime = -System.currentTimeMillis();
     }
 

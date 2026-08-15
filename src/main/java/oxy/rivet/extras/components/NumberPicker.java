@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 public class NumberPicker extends DragNumberInput {
     private final TextField field = new TextField() {
         @Override
-        protected boolean onComponentKeyUp(KeyEvent event) {
+        protected boolean onKeyUpInternal(KeyEvent event) {
             if (event.key() == Key.ENTER && layer != null) {
                 this.rivet().removeLayer(layer);
                 layer = null;
@@ -30,7 +30,7 @@ public class NumberPicker extends DragNumberInput {
                 } catch (Exception ignored) {
                 }
             }
-            return super.onComponentKeyUp(event);
+            return super.onKeyUpInternal(event);
         }
     };
 
@@ -48,14 +48,14 @@ public class NumberPicker extends DragNumberInput {
 
     @SneakyThrows
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
         final Field field = DragNumberInput.class.getDeclaredField("dragging");
         field.setAccessible(true);
         if (field.getBoolean(this)) {
             this.skipNextUp = true;
         }
 
-        return super.onComponentMouseMove(event, size);
+        return super.onMouseMoveInternal(event, size);
     }
 
     protected void updateComponentPosition(Rectangle bounds) {
@@ -68,7 +68,7 @@ public class NumberPicker extends DragNumberInput {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (!this.skipNextUp && layer == null) {
             field.text(String.valueOf(value()));
             final Container container = new Container(AbsoluteLayout.INSTANCE);
@@ -79,13 +79,13 @@ public class NumberPicker extends DragNumberInput {
             Rectangle bounds = this.absoluteBounds();
             field.cornerRadius().set(this.cornerRadius().value());
             field.layoutOptions(new AbsoluteOptions(bounds.x(), bounds.y(), bounds.width(), bounds.height()));
-            container.addChild(field);
+            container.add(field);
 
             this.layer = new Layer(container, LayerBucket.OVERLAY);
             this.rivet().addLayer(this.layer);
         }
 
         this.skipNextUp = false;
-        return super.onComponentMouseUp(event, size);
+        return super.onMouseUpInternal(event, size);
     }
 }

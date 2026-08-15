@@ -1,6 +1,8 @@
 package test;
 
+import net.lenni0451.rivet.backend.text.Font;
 import net.lenni0451.rivet.backend.thingl.GLFWApplication;
+import net.lenni0451.rivet.backend.thingl.ThinGLAssetLoader;
 import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
 import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.resource.font.instance.FontInstanceSet;
@@ -30,8 +32,8 @@ public abstract class TestBase extends GLFWApplication {
 
 
     @Override
-    protected FontInstanceSet createFont() throws Exception {
-        return createFont(20, TestBase.class.getResourceAsStream("/NotoSans-Regular.ttf"));
+    protected Font createFont(final ThinGLAssetLoader assetLoader) throws Exception {
+        return assetLoader.loadFont(TestBase.class.getResourceAsStream("/NotoSans-Regular.ttf"), 20);
     }
 
 }

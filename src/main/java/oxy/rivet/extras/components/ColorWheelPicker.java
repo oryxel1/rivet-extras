@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
+import net.lenni0451.rivet.backend.thingl.texture.ThinGLGPUTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.event.ListenerList;
 import net.lenni0451.rivet.input.mouse.MouseButton;
@@ -32,7 +32,7 @@ public class ColorWheelPicker extends Component {
 
     private float brightness = 1;
 
-    private ThinGLTexture generatedTexture;
+    private ThinGLGPUTexture generatedTexture;
 
     @Getter
     private final ListenerList<Consumer<Color>> colorChangeListener = new ListenerList<>();
@@ -54,7 +54,7 @@ public class ColorWheelPicker extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         if (generatedTexture == null) {
             generate();
         }
@@ -92,7 +92,7 @@ public class ColorWheelPicker extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
         if (event.isHeld(MouseButton.LEFT)) {
             update(event.x(), event.y());
         }
@@ -101,7 +101,7 @@ public class ColorWheelPicker extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() != MouseButton.LEFT) {
             return false;
         }
@@ -174,7 +174,7 @@ public class ColorWheelPicker extends Component {
             }
         }}
 
-        generatedTexture = new ThinGLTexture(Texture2D.fromImage(image));
+        generatedTexture = new ThinGLGPUTexture(Texture2D.fromImage(image));
         image.free();
     }
 }

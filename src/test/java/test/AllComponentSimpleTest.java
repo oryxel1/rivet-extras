@@ -19,11 +19,11 @@ public class AllComponentSimpleTest extends TestBase {
     protected void init(Rivet rivet) {
         Container container = new Container(VerticalListLayout.DEFAULT);
 
-        container.addChild(new ColorWheelPicker(Color.WHITE));
-        container.addChild(new FullSlider(0, 10, 0.1, 1));
-        container.addChild(new TypingLabel("Test Typing Text"));
-        container.addChild(new NumberPicker(0, 10, 0.1, 1));
+        container.add(new ColorWheelPicker(Color.WHITE));
+        container.add(new FullSlider(0, 10, 0.1, 1));
+        container.add(new TypingLabel("Test Typing Text"));
+        container.add(new NumberPicker(0, 10, 0.1, 1));
 
-        rivet.root().addChild(container);
+        rivet.root().add(container);
     }
 }
